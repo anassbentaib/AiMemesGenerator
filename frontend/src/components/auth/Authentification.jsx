@@ -4,7 +4,6 @@ import { GoogleLogin } from '@react-oauth/google';
 import { Container, Box, Heading, FormControl, Input, Button, Text, Center, Flex, Divider, Image, useToast, InputRightElement, InputGroup, FormErrorMessage } from '@chakra-ui/react';
 import { humanRobot, logo } from '../../assets';
 import { signUp, Login,googleLogin } from '../api/api';
-import jwtDecode from 'jwt-decode'
 import {LiaEyeSlash , LiaEyeSolid} from 'react-icons/lia'
 
 const initial = { username: '', email: '', password: '' };
@@ -56,20 +55,6 @@ const Authentication = () => {
     setIsSignup((prev) => !prev);
   };
 
-  const googleSuccess = async (res) => {
-    try {
-      const token = res.credential;
-      const decodedToken = jwtDecode(token);
-      const { name, email } = decodedToken; 
-      await googleLogin({ name, email, token });
-      
-      localStorage.setItem('profile', JSON.stringify({token, username: name, email  }));
-      history('/');
-      window.location.reload()
-    } catch (error) {
-      console.log(error);
-    }
-  };
   
   const googleError = () => {
     console.log('Google login error');

@@ -3,14 +3,14 @@
 import axios from 'axios';
 
 
-const url = 'http://localhost:8080/auth'; 
+const BASE_URL = 'https://aigeneraaator.onrender.com'; 
 
 
-export const Login = (form) => axios.post(`${url}/login`, form);
+export const Login = (form) => axios.post(`${BASE_URL}/auth/login`, form);
  
 
-export const signUp = (form) => axios.post(`${url}/signup`, form);
+export const signUp = (form) => axios.post(`${BASE_URL}/auth/signup`, form);
  
 
-export const googleLogin = ({ name, email, token } ) => axios.post(`${url}/google-login`,{ name, email, token });
+export const googleLogin = ({ name, email, token } ) => axios.post(`${BASE_URL}/auth/google-login`,{ name, email, token });
   

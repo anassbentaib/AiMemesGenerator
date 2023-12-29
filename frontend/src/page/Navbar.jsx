@@ -7,7 +7,6 @@ import {ExternalLinkIcon, MoonIcon, SunIcon} from '@chakra-ui/icons'
 import { LuHelpCircle} from 'react-icons/lu'
 import decode from 'jwt-decode'
 import { googleLogout } from '@react-oauth/google';
-import axios from 'axios';
 
 const Navbar = () => {
   const [user , setUser] = useState(JSON.parse(localStorage.getItem('profile')))

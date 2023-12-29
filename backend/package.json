@@ -5,7 +5,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js"
+    "start": "node index.js",
+    "build" : "npm i"
+
   },
   "author": "",
   "license": "ISC",
@@ -19,12 +21,14 @@
     "google-auth-library": "^9.0.0",
     "jsonwebtoken": "^9.0.1",
     "mongoose": "^6.8.2",
+    "node": "^20.6.0",
     "nodemon": "^2.0.20",
     "openai": "^3.1.0"
   },
   "devDependencies": {
     "eslint": "^8.31.0",
     "eslint-config-airbnb-base": "^15.0.0",
-    "eslint-plugin-import": "^2.26.0"
+    "eslint-plugin-import": "^2.26.0"   
   }
+  
 }

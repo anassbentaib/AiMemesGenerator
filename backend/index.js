@@ -22,11 +22,10 @@ app.get('/', async (req, res) => {
   });
 });
 
-const PORT = process.env.PORT || 8080 ; 
 const startServer = async () => {
   try {
-    connectDB(process.env.CONNECTION_URL);
-    app.listen(PORT, () => console.log(`Server Running in the Port  : http://localhost:${PORT}`));
+    connectDB('mongodb+srv://DALLE-AI:rphAnTMZDXyYDxak@cluster0.xufew4u.mongodb.net/?retryWrites=true&w=majority');
+    app.listen(8080, () => console.log(`Server Running in the 8080  : http://localhost:${8080}`));
   } catch (error) {
     console.log(error);
   }

@@ -40,7 +40,7 @@ const Home = () => {
     setLoading(true);
 
     try {
-      const response = await fetch("http://localhost:8080/create-post", {
+      const response = await fetch("https://aigeneraaator.onrender.com/create-post", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
