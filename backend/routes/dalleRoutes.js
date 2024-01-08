@@ -28,7 +28,7 @@ router.route('/').post(async (req, res) => {
 
 		});
 		console.log("response" , response);
-		const image = response.data.images[0].uri;
+		const image = response?.data?.images[0].uri;
 
 		console.log('image' , image);
 		res.status(200).json({

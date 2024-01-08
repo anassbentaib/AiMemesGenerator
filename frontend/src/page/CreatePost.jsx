@@ -1,22 +1,33 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useToast, Box, Button, Flex, Heading, Image, Spinner, Text } from '@chakra-ui/react';
-import { getRandomPrompt } from '../utils';
-import { preview } from '../assets';
-import { FormField, Loader } from '../components';
-import {ImMagicWand} from 'react-icons/im'
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import {
+  useToast,
+  Box,
+  Button,
+  Flex,
+  Heading,
+  Image,
+  Spinner,
+  Text,
+} from "@chakra-ui/react";
+import { getRandomPrompt } from "../utils";
+import { preview } from "../components/assets";
+import { FormField, Loader } from "../components";
+import { ImMagicWand } from "react-icons/im";
+import { createPost, gererateImage } from "../api/api";
 
 const CreatePost = () => {
-  const [form, setForm] = useState({ name: '', prompt: '', photo: '' });
+  const [form, setForm] = useState({ name: "", prompt: "", photo: "" });
   const [generatingImg, setGeneratingImg] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const toast = useToast();
 
-  const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
+  const handleChange = (e) =>
+    setForm({ ...form, [e.target.name]: e.target.value });
 
   const handleSurpriseMe = () => {
-    const randomPrompt = getRandomPrompt(form.prompt);
+    const randomPrompt = getRandomPrompt(form);
     setForm({ ...form, prompt: randomPrompt });
   };
 
@@ -24,41 +35,43 @@ const CreatePost = () => {
     if (form.prompt) {
       try {
         setGeneratingImg(true);
-        const response = await fetch('https://aigeneraaator.onrender.com/generate-image', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            prompt: form.prompt,
-          }),
-        });
-        console.log('generating image resoinse :' , response);
+        const response = await gererateImage(form.prompt);
+        // fetch("http://localhost:8080/generate-image", {
+        //   method: "POST",
+        //   headers: {
+        //     "Content-Type": "application/json",
+        //   },
+        //   body: JSON.stringify({
+        //     prompt: form.prompt,
+        //   }),
+        // });
+        console.log("generating image resoinse :", response);
 
         const data = await response.json();
-        console.log('data ' ,data);
+        console.log("data ", data);
         setForm({ ...form, photo: data.photo });
       } catch (err) {
         toast({
-          title: 'Error',
-          description: 'An error occurred while generating the image, please try again later',
-          status: 'error',
+          title: "Error",
+          description:
+            "An error occurred while generating the image, please try again later",
+          status: "error",
           duration: 5000,
           isClosable: true,
-          position: 'top',
+          position: "top",
         });
-      <Loader />
+        <Loader />;
       } finally {
         setGeneratingImg(false);
       }
     } else {
       toast({
-        title: 'Warning',
-        description: 'Please provide a proper prompt',
-        status: 'warning',
+        title: "Warning",
+        description: "Please provide a proper prompt",
+        status: "warning",
         duration: 5000,
         isClosable: true,
-        position: 'top',
+        position: "top",
       });
     }
   };
@@ -69,34 +82,25 @@ const CreatePost = () => {
     if (form.prompt && form.photo) {
       setLoading(true);
       try {
-        const response = await fetch('https://aigeneraaator.onrender.com/create-post', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ ...form }),
-        });
-
-        await response.json();
-        console.log('create  response: ' , response);
-
+        const response = await createPost(form);
         toast({
-          title: 'Success',
-          description: 'post was created successfully ',
-          status: 'success',
+          title: "Success",
+          description: "post was created successfully ",
+          status: "success",
           duration: 5000,
           isClosable: true,
-          position: 'top',
+          position: "top",
         });
-        navigate('/');
+        navigate("/");
       } catch (err) {
         toast({
-          title: 'Error',
-          description: 'An error occurred while creating the meme, please try again later',
-          status: 'error',
+          title: "Error",
+          description:
+            "An error occurred while creating the meme, please try again later",
+          status: "error",
           duration: 5000,
           isClosable: true,
-          position: 'top',
+          position: "top",
         });
         <Loader />;
       } finally {
@@ -104,12 +108,12 @@ const CreatePost = () => {
       }
     } else {
       toast({
-        title: 'Warning',
-        description: 'Please generate an image with proper details',
-        status: 'warning',
+        title: "Warning",
+        description: "Please generate an image with proper details",
+        status: "warning",
         duration: 5000,
         isClosable: true,
-        position: 'top',
+        position: "top",
       });
     }
   };
@@ -121,7 +125,8 @@ const CreatePost = () => {
           Create
         </Heading>
         <Text mt="2" color="#9f9f9f" fontSize="15px" maxW="500px">
-          Generate an imaginative image through AIMemesGallery 1.0 and share it with the community
+          Generate an imaginative image through AIMemesGallery 1.0 and share it
+          with the community
         </Text>
       </Box>
 
@@ -148,37 +153,50 @@ const CreatePost = () => {
           />
 
           <Box
-           bg="gray.50"
-           border="1px"
-           borderColor="gray.300"
-           color="gray.900"
-           fontSize="sm"
-           rounded="lg"
-           focusBorderColor="blue.500"
-           w="64"
-           p="3"
-           h="64"
-           flex="1"
-           justify="center"
-           align="center"
-           pos="relative"
+            bg="gray.50"
+            border="1px"
+            borderColor="gray.300"
+            color="gray.900"
+            fontSize="sm"
+            rounded="lg"
+            focusBorderColor="blue.500"
+            w="64"
+            p="3"
+            h="64"
+            flex="1"
+            justify="center"
+            align="center"
+            pos="relative"
           >
             {form.photo ? (
-              <Image src={form.photo} alt={form.prompt} w="full" h="full" objectFit="contain" />
+              <Image
+                src={form.photo}
+                alt={form.prompt}
+                w="full"
+                h="full"
+                objectFit="contain"
+              />
             ) : (
-              <Image src={preview} alt="preview" w="9/12" h="9/12" objectFit="contain" opacity="01" />
+              <Image
+                src={preview}
+                alt="preview"
+                w="9/12"
+                h="9/12"
+                objectFit="contain"
+                opacity="01"
+              />
             )}
 
             {generatingImg && (
-               <Flex
-               pos="absolute"
-               inset="0"
-               zIndex="0"
-               justify="center"
-               align="center"
-               bg="rgba(0,0,0,0.5)"
-               rounded="lg"
-             >
+              <Flex
+                pos="absolute"
+                inset="0"
+                zIndex="0"
+                justify="center"
+                align="center"
+                bg="rgba(0,0,0,0.5)"
+                rounded="lg"
+              >
                 <Spinner />
               </Flex>
             )}
@@ -187,7 +205,7 @@ const CreatePost = () => {
 
         <Box mt="5">
           <Text color="#9f9f9f" fontSize="15px">
-            {generatingImg ? 'in less than a minute... please wait':''}
+            {generatingImg ? "in less than a minute... please wait" : ""}
           </Text>
         </Box>
 
@@ -197,39 +215,40 @@ const CreatePost = () => {
             mt="3"
             color="white"
             bg="#009e66"
-            _hover={{bg:'#009e66'}}
+            _hover={{ bg: "#009e66" }}
             fontWeight="medium"
             rounded="md"
             fontSize="sm"
-            w={{ base: '100%', sm: 'auto' }}            
+            w={{ base: "100%", sm: "auto" }}
             px="10"
             py="6"
             textAlign="center"
             onClick={generateImage}
           >
-            {generatingImg ? 'Generating...' : 'Generate'}
+            {generatingImg ? "Generating..." : "Generate"}
           </Button>
         </Box>
 
         <Box mt="10">
           <Text mt="2" color="#666e75" fontSize="14px">
-            ** Once you have created the image you want, you can share it with others in the community **
+            ** Once you have created the image you want, you can share it with
+            others in the community **
           </Text>
           <Button
             type="submit"
             mt="3"
             color="white"
             bg="#6469ff"
-            _hover={{bg:'#6469ff'}}
+            _hover={{ bg: "#6469ff" }}
             fontWeight="medium"
             rounded="md"
             fontSize="sm"
-            w={{ base: '100%', sm: 'auto' }}            
+            w={{ base: "100%", sm: "auto" }}
             px="10"
             py="6"
             textAlign="center"
           >
-            {loading ? 'Sharing...' : 'Share with the Community'}
+            {loading ? "Sharing..." : "Share with the Community"}
           </Button>
         </Box>
       </form>

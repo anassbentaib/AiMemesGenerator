@@ -1,13 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Card, FormField, Loader } from "../components";
-import {
-  Spinner,
-  Box,
-  Heading,
-  Text,
-  Flex,
-  Spacer,
-} from "@chakra-ui/react";
+import { Spinner, Box, Heading, Text, Flex, Spacer } from "@chakra-ui/react";
 
 const RenderCards = ({ data, title }) => {
   if (data?.length > 0) {
@@ -40,7 +33,7 @@ const Home = () => {
     setLoading(true);
 
     try {
-      const response = await fetch("https://aigeneraaator.onrender.com/create-post", {
+      const response = await fetch("http://localhost:8080/create-post", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
