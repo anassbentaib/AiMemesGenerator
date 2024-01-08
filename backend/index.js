@@ -6,13 +6,14 @@ import connectDB from "./mongodb/connect.js";
 import postRoutes from "./routes/postRoutes.js";
 import dalleRoutes from "./routes/dalleRoutes.js";
 import authRoutes from "./routes/auth.js";
+import buildroute from "../frontend/dist/index.html";
 dotenv.config();
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 const _dirname = path.dirname("");
-const buildPath = path.join(_dirname, "../frontend/dist");
+const buildPath = path.join(_dirname, buildroute);
 app.use(express.static(buildPath));
 app.use(
   cors({
